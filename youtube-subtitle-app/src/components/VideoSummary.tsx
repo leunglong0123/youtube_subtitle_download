@@ -5,15 +5,17 @@ import Button from './ui/Button';
 import * as Select from '@radix-ui/react-select';
 import { toast } from 'sonner';
 import { ErrorType, createError, AppError } from '../utils/errorUtils';
+import SummaryDisplay from './SummaryDisplay';
 
 interface VideoSummaryProps {
   videoId: string;
+  hasSubtitles: boolean;
   onAddToTimeline?: (summary: string) => void;
 }
 
 type SummaryLength = 'short' | 'medium' | 'long';
 
-const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, onAddToTimeline }) => {
+const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, hasSubtitles, onAddToTimeline }) => {
   const [summary, setSummary] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<AppError | null>(null);
@@ -22,6 +24,8 @@ const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, onAddToTimeline })
 
   useEffect(() => {
     const fetchSummary = async () => {
+      if (!hasSubtitles) return;
+      
       setLoading(true);
       setError(null);
       try {
@@ -55,10 +59,10 @@ const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, onAddToTimeline })
       }
     };
 
-    if (videoId) {
+    if (videoId && hasSubtitles) {
       fetchSummary();
     }
-  }, [videoId, summaryLength]);
+  }, [videoId, summaryLength, hasSubtitles]);
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(summary);
@@ -71,6 +75,14 @@ const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, onAddToTimeline })
       toast.success('Summary added to timeline');
     }
   };
+
+  if (!hasSubtitles) {
+    return (
+      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <p className="text-yellow-800">No subtitles available for this video. Summary cannot be generated.</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return <LoadingSpinner />;
@@ -97,9 +109,9 @@ const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, onAddToTimeline })
           Characters: {characterCount}
         </div>
       </div>
-      <div className="prose max-w-none">
-        {summary}
-      </div>
+      
+      <SummaryDisplay summary={summary} />
+      
       <div className="flex gap-2">
         <Button variant="primary" size="medium" onClick={handleCopyToClipboard}>
           Copy to Clipboard
