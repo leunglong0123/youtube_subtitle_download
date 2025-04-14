@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "generatedAt": "2025-04-13T22:59:14.881Z",
+    "tasksAnalyzed": 10,
+    "thresholdScore": 5,
+    "projectName": "Your Project Name",
+    "usedResearch": false
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Setup Next.js Project Structure",
+      "complexityScore": 5,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the Next.js project setup into specific subtasks covering initialization, directory structure creation, dependency installation, environment configuration, and initial testing",
+      "reasoning": "This task involves standard Next.js setup but requires specific directory structure and dependencies. Medium complexity due to the need for proper configuration but follows established patterns."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Implement YouTube API Integration",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Divide the YouTube API integration into subtasks for API key setup, endpoint implementation for video validation, subtitle listing, subtitle content retrieval, error handling, and testing with various video types",
+      "reasoning": "Higher complexity due to integration with external APIs (YouTube Data API and Caption API), requiring proper authentication, error handling, and multiple endpoint implementations."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Develop Subtitle Parsing Module",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the subtitle parsing module into subtasks for SRT format parsing, VTT format parsing, unified data structure creation, time-based segment grouping, edge case handling, and comprehensive testing",
+      "reasoning": "High complexity due to parsing different formats, handling edge cases, and creating a unified data structure. Requires detailed understanding of subtitle formats and robust error handling."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Build URL Input and Validation UI",
+      "complexityScore": 4,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide the URL input UI implementation into subtasks for form component creation, client-side validation logic, loading state management, and API integration with error handling",
+      "reasoning": "Relatively straightforward UI implementation with standard form validation and API integration. Lower complexity but requires attention to user experience details."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Implement Subtitle Format Selection UI",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the subtitle format selection UI into subtasks for format fetching API integration, selection component design, auto-selection logic, and error/loading state handling",
+      "reasoning": "Medium complexity due to dependency on API data and need for conditional rendering based on available formats. Requires thoughtful UX for format selection."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Develop Interactive Timeline Component",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Divide the interactive timeline component into subtasks for visual timeline design, marker positioning logic, subtitle text display, click interaction implementation, responsive styling, and scrolling functionality",
+      "reasoning": "High complexity due to interactive visualization requirements, responsive design needs, and potential performance considerations for videos with many subtitle segments."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Integrate YouTube Player with Timeline",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the YouTube player integration into subtasks for player embedding, positioning alongside timeline, timestamp synchronization logic, click-to-seek functionality, and current position highlighting",
+      "reasoning": "Complex due to the need for bidirectional synchronization between the player and timeline component. Requires careful handling of player events and state management."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Implement Export Functionality",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide the export functionality into subtasks for API endpoint creation, TXT format generation, PDF format generation, UI component implementation, and download functionality",
+      "reasoning": "Medium-high complexity due to the need to support multiple export formats and generate properly formatted documents. Requires integration with PDF generation libraries."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Implement Error Handling and Edge Cases",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down error handling implementation into subtasks for global API error handling, user-friendly error messages, custom error pages, fallback UI states, retry mechanisms, and edge case testing",
+      "reasoning": "High complexity due to the comprehensive nature of error handling across the entire application. Requires anticipating various failure scenarios and providing appropriate user feedback."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Deploy to Vercel and Implement Analytics",
+      "complexityScore": 5,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Divide the deployment and analytics implementation into subtasks for Vercel configuration, environment variable setup, analytics integration, performance monitoring, and deployment pipeline creation",
+      "reasoning": "Medium complexity due to the need for proper production configuration and analytics setup. Follows standard deployment patterns but requires attention to environment configuration and monitoring."
+    }
+  ]
+}

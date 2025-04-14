@@ -1,0 +1,403 @@
+.timeline-container {
+  width: 100%;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  user-select: none;
+}
+
+.timeline {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.timeline-marker {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: rgba(0, 100, 255, 0.2);
+  border-left: 1px solid rgba(0, 100, 255, 0.5);
+  border-right: 1px solid rgba(0, 100, 255, 0.5);
+  z-index: 1;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+
+.timeline-marker:hover {
+  background-color: rgba(0, 100, 255, 0.3);
+}
+
+.timeline-marker.active {
+  background-color: rgba(0, 100, 255, 0.4);
+}
+
+.marker-label {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 10px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 8px);
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #ff0000;
+  z-index: 2;
+}
+
+/* TimelineControls styles */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.control-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #e0e0e0;
+}
+
+.time-display {
+  font-family: monospace;
+  font-size: 16px;
+  color: #333;
+  min-width: 100px;
+  text-align: center;
+}
+
+.timeline-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-marker:hover .timeline-tooltip {
+  opacity: 1;
+}
+
+.timeline-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 0 0 8px 8px;
+  flex-wrap: wrap;
+}
+
+.timeline-slider {
+  flex-grow: 1;
+  margin: 0 10px;
+  height: 8px;
+  cursor: pointer;
+  appearance: none;
+  background-color: #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #4285f4;
+  cursor: pointer;
+}
+
+.timeline-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #4285f4;
+  cursor: pointer;
+  border: none;
+}
+
+.timeline-progress-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2px;
+  background-color: #ff5722;
+  z-index: 10;
+  transition: left 0.1s linear;
+}
+
+.timeline-horizontal {
+  height: 40px;
+}
+
+.timeline-vertical {
+  height: 300px;
+  width: 80px;
+}
+
+.timeline-progress {
+  position: absolute;
+  background-color: #007bff;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.timeline-progress-horizontal {
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.timeline-progress-vertical {
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
+.timeline-cursor {
+  position: absolute;
+  background-color: #dc3545;
+  z-index: 3;
+}
+
+.timeline-cursor-horizontal {
+  width: 2px;
+  height: 100%;
+  top: 0;
+}
+
+.timeline-cursor-vertical {
+  height: 2px;
+  width: 100%;
+  left: 0;
+}
+
+.timeline-time-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #495057;
+  margin-top: 5px;
+}
+
+/* Enhanced Timeline Controls Styles */
+.controlsContainer {
+  width: 100%;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  margin-top: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.progressBarContainer {
+  width: 100%;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.progressBar {
+  height: 6px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 3px;
+  transition: width 0.1s ease-out;
+}
+
+.timeDisplay {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.currentTime {
+  font-weight: 500;
+}
+
+.timeSeparator {
+  margin: 0 3px;
+  color: #999;
+}
+
+.totalTime {
+  color: #999;
+}
+
+.markerIndicator {
+  margin-left: auto;
+  font-size: 11px;
+  background-color: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.controlButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.controlButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #666;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.controlButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.playPauseButton {
+  background-color: #f0f0f0;
+  margin: 0 10px;
+}
+
+.playPauseButton:hover {
+  background-color: #e0e0e0;
+}
+
+.markerButton {
+  color: #3b82f6;
+}
+
+/* Timeline Controls (Legacy) */
+.timeline-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.control-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-display {
+  margin-left: auto;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .timeline {
+    height: 30px;
+  }
+  
+  .marker-label {
+    display: none;
+  }
+  
+  .controlButton {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline {
+    min-width: 300px;
+  }
+  
+  .timeline-tooltip {
+    max-width: 150px;
+  }
+}
+
+/* Add pulse effect animation */
+@keyframes pulse {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+}
+
+.pulseEffect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(59, 130, 246, 0.4);
+  animation: pulse 2s infinite ease-in-out;
+  border-radius: 2px;
+  pointer-events: none;
+} 
