@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 interface ExportOptionsProps {
   videoId: string;
@@ -18,7 +17,6 @@ const ExportOptions: React.FC<ExportOptionsProps> = ({
   const [format, setFormat] = useState<string>('txt');
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   // Available export formats
   const formats = [

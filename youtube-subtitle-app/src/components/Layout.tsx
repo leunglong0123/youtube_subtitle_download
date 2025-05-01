@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { ReactNode } from 'react';
-import Header from './Header';
 import Footer from './Footer';
 import { Container } from './ui';
 

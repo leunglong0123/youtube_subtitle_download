@@ -24,6 +24,7 @@ const Timeline: React.FC<TimelineProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [activeMarkerIndex, setActiveMarkerIndex] = useState(-1);
   const timelineRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>(0);
 
@@ -50,6 +51,14 @@ const Timeline: React.FC<TimelineProps> = ({
     return () => cancelAnimationFrame(animationRef.current);
   }, [isPlaying, videoDuration]);
 
+  // Update active marker index based on current time
+  useEffect(() => {
+    const index = subtitles.findIndex(
+      sub => currentTime >= sub.startTime && currentTime <= sub.endTime
+    );
+    setActiveMarkerIndex(index);
+  }, [currentTime, subtitles]);
+
   // Playback controls
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -69,6 +78,50 @@ const Timeline: React.FC<TimelineProps> = ({
     setCurrentTime(prev => Math.min(videoDuration, prev + 10));
     if (onMarkerClick) {
       const nearestSubtitle = findNearestSubtitle(currentTime + 10);
+      if (nearestSubtitle) {
+        onMarkerClick(nearestSubtitle.startTime);
+      }
+    }
+  };
+
+  const handlePreviousMarker = () => {
+    if (subtitles.length === 0) return;
+    
+    let prevIndex;
+    if (activeMarkerIndex > 0) {
+      prevIndex = activeMarkerIndex - 1;
+    } else {
+      prevIndex = subtitles.length - 1; // Wrap to the last marker
+    }
+    
+    const prevMarker = subtitles[prevIndex];
+    setCurrentTime(prevMarker.startTime);
+    if (onMarkerClick) {
+      onMarkerClick(prevMarker.startTime);
+    }
+  };
+
+  const handleNextMarker = () => {
+    if (subtitles.length === 0) return;
+    
+    let nextIndex;
+    if (activeMarkerIndex < subtitles.length - 1 && activeMarkerIndex !== -1) {
+      nextIndex = activeMarkerIndex + 1;
+    } else {
+      nextIndex = 0; // Wrap to the first marker
+    }
+    
+    const nextMarker = subtitles[nextIndex];
+    setCurrentTime(nextMarker.startTime);
+    if (onMarkerClick) {
+      onMarkerClick(nextMarker.startTime);
+    }
+  };
+
+  const handleSeek = (time: number) => {
+    setCurrentTime(time);
+    if (onMarkerClick) {
+      const nearestSubtitle = findNearestSubtitle(time);
       if (nearestSubtitle) {
         onMarkerClick(nearestSubtitle.startTime);
       }
@@ -185,6 +238,11 @@ const Timeline: React.FC<TimelineProps> = ({
         onSkipForward={handleSkipForward}
         currentTime={currentTime}
         duration={videoDuration}
+        activeMarkerIndex={activeMarkerIndex}
+        totalMarkers={subtitles.length}
+        onPreviousMarker={handlePreviousMarker}
+        onNextMarker={handleNextMarker}
+        onSeek={handleSeek}
       />
     </div>
   );

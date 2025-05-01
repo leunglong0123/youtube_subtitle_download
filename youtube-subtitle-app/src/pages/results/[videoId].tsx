@@ -62,9 +62,11 @@ export default function ResultsPage({ initialData, error: serverError }: Results
         })
 
         setFilteredEntries(data.entries || [])
-      } catch (err: any) {
-        console.error("Error fetching subtitle data:", err)
-        setError(err.message || "An error occurred while fetching subtitle data")
+      } catch (error: unknown) {
+        console.error("Error fetching subtitle data:", error)
+        setError(typeof error === "object" && error !== null && "message" in error
+          ? (error as Error).message
+          : "An error occurred while fetching subtitle data")
       } finally {
         setIsLoading(false)
       }
@@ -119,6 +121,27 @@ export default function ResultsPage({ initialData, error: serverError }: Results
   // Handle play/pause
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying)
+  }
+
+  // Download subtitles as text file
+  const downloadSubtitlesAsTxt = () => {
+    if (!videoData?.entries || videoData.entries.length === 0) return
+    
+    // Format subtitle entries as text
+    const subtitleText = videoData.entries.map(entry => {
+      return `[${formatTimestamp(entry.start)}] ${entry.text}`
+    }).join('\n\n')
+    
+    // Create a download link
+    const element = document.createElement('a')
+    const file = new Blob([subtitleText], {type: 'text/plain'})
+    element.href = URL.createObjectURL(file)
+    element.download = `${videoData.title || `youtube-subtitles-${videoId}`}.txt`
+    
+    // Append to the document, click, and clean up
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
   }
 
   if (isLoading) {
@@ -184,7 +207,9 @@ export default function ResultsPage({ initialData, error: serverError }: Results
 
               {videoData?.entries && activeEntryIndex >= 0 && (
                 <div className="bg-gray-100 p-4 rounded-lg">
-                  <p className="text-lg">"{videoData.entries[activeEntryIndex]?.text}"</p>
+                  <p className="text-lg">
+                    &quot;{videoData.entries[activeEntryIndex]?.text}&quot;
+                  </p>
                 </div>
               )}
             </div>
@@ -227,8 +252,12 @@ export default function ResultsPage({ initialData, error: serverError }: Results
             <Link href="/">
               <Button variant="secondary">Back to Home</Button>
             </Link>
-            <Button disabled={!videoData || isLoading} onClick={() => alert("Export functionality would be implemented here")}>
-              Export Timeline
+            <Button 
+              variant="secondary"
+              disabled={!videoData?.entries || videoData.entries.length === 0} 
+              onClick={downloadSubtitlesAsTxt}
+            >
+              Download Subtitles as TXT
             </Button>
           </div>
         </div>
@@ -263,17 +292,14 @@ export default function ResultsPage({ initialData, error: serverError }: Results
 }
 
 // In a real application, you would fetch initial data on the server
-export async function getServerSideProps({ params }: { params: { videoId: string } }) {
-  // The videoId from the URL
-  const { videoId } = params
-
+export async function getServerSideProps() {
   // For the example, we'll skip server-side data fetching
   // In a real app, you would fetch the data here
-
+  
   return {
     props: {
       // Leave initialData undefined so it will be fetched client-side
       // This simulates the common pattern of loading data client-side
-    },
-  }
+    }
+  };
 }

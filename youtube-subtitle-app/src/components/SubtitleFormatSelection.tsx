@@ -1,5 +1,4 @@
 import React from 'react';
-import { SubtitleLanguage, SubtitleMetadata } from '../lib/subtitleFormats';
 import { useSubtitleSelection } from '../lib/useSubtitleSelection';
 import LoadingSpinner from './LoadingSpinner';
 

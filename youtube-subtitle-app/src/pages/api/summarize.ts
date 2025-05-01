@@ -18,7 +18,7 @@ type SummaryResponse = {
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
 
 // Define word limits for different summary lengths
-const SUMMARY_LENGTHS = {
+const SUMMARY_LENGTHS: Record<string, number> = {
   short: 100,
   medium: 200,
   long: 400,
@@ -62,13 +62,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     // Combine all subtitle text into a single string
-    const fullText = subtitleData.entries.map((entry: any) => entry.text).join(" ")
+    const fullText = subtitleData.entries.map((entry: { text: string }) => entry.text).join(" ")
 
     // Initialize the Gemini model
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
 
     // Create a prompt for summarization based on the requested length
-    const wordLimit = SUMMARY_LENGTHS[length]
+    const wordLimit = SUMMARY_LENGTHS[length] || 200
     const prompt = `Your output should use the following template:
 
 ### Summary
@@ -102,7 +102,7 @@ In addition to the bullet points, extract the most important keywords and any co
 You are also a transcription AI and you have been provided with a text that may contain mentions of sponsorships or brand names. Your task write what you have been said to do while avoiding any mention of sponsorships or brand names.
 
 
-Please ensure that the summary, bullet points, and explanations fit within the 330-word limit, while still offering a comprehensive and clear understanding of the video's content. Use the text above: ${fullText}..`
+Please ensure that the summary, bullet points, and explanations fit within the ${wordLimit}-word limit, while still offering a comprehensive and clear understanding of the video's content. Use the text above: ${fullText}..`
 
     // Generate the summary
     const result = await model.generateContent(prompt)
@@ -117,12 +117,12 @@ Please ensure that the summary, bullet points, and explanations fit within the 3
       summary,
       characterCount,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error generating summary:", error)
     return res.status(500).json({
       videoId: req.body.videoId || "",
       summary: "",
-      error: error.message || "Failed to generate summary",
+      error: (error as Error).message || "Failed to generate summary",
     })
   }
 }

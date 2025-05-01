@@ -47,7 +47,8 @@ const VideoSummary: React.FC<VideoSummaryProps> = ({ videoId, hasSubtitles, onAd
         const data = await response.json();
         setSummary(data.summary);
         setCharacterCount(data.characterCount || 0);
-      } catch (err) {
+      } catch (error: unknown) {
+        console.error('Error fetching summary:', error);
         setError(createError(
           'Failed to fetch video summary',
           ErrorType.API,

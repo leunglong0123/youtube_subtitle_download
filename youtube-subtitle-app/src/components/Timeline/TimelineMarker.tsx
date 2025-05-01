@@ -24,9 +24,6 @@ const TimelineMarker: React.FC<TimelineMarkerProps> = ({
   const endPercent = (endTime / totalDuration) * 100;
   const widthPercent = endPercent - startPercent;
   
-  // Create a truncated version of the text for display
-  const truncatedText = text.length > 25 ? `${text.substring(0, 25)}...` : text;
-  
   // Format time for tooltip display
   const timeLabel = formatTime(startTime);
   

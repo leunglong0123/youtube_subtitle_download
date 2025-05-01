@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import ReactPlayer from 'react-player/youtube';
 
 export interface YouTubePlayerProps {
@@ -17,15 +17,9 @@ export interface YouTubePlayerRef {
   getCurrentTime: () => number;
 }
 
-// Type for ReactPlayer YouTube config
-interface ReactPlayerConfig {
-  [key: string]: any;
-}
-
 const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(
   ({ videoId, onProgress, onReady, onPlay, onPause, className }, ref) => {
     const playerRef = useRef<ReactPlayer>(null);
-    const [isReady, setIsReady] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
 
     // Expose methods to parent components through the ref
@@ -56,21 +50,9 @@ const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(
     };
 
     const handleReady = () => {
-      setIsReady(true);
       if (onReady) {
         onReady();
       }
-    };
-
-    // YouTube player configuration
-    const youtubeConfig: ReactPlayerConfig = {
-      youtube: {
-        playerVars: {
-          autoplay: 0,
-          modestbranding: 1,
-          rel: 0
-        },
-      },
     };
 
     return (
@@ -87,7 +69,13 @@ const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(
           onPause={onPause}
           onProgress={handleProgress}
           progressInterval={500}
-          config={youtubeConfig}
+          config={{
+            playerVars: {
+              autoplay: 0,
+              modestbranding: 1,
+              rel: 0
+            }
+          }}
         />
       </div>
     );
