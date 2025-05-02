@@ -44,14 +44,16 @@ export async function getSubtitles({ videoID, lang = "en" }: { videoID: string; 
   }
 
   const { captionTracks } = JSON.parse(`{${match[0]}}`) as { captionTracks: CaptionTrack[] }
-  const subtitle =
+  
+  // Use type assertion to ensure the result is recognized as CaptionTrack or undefined
+  const subtitle: CaptionTrack | undefined =
     find(captionTracks, {
       vssId: `.${lang}`,
-    }) ||
+    }) as CaptionTrack | undefined ||
     find(captionTracks, {
       vssId: `a.${lang}`,
-    }) ||
-    find(captionTracks, ({ vssId }) => vssId && vssId.match(`.${lang}`))
+    }) as CaptionTrack | undefined ||
+    find(captionTracks, ({ vssId }) => vssId && vssId.match(`.${lang}`)) as CaptionTrack | undefined
 
   // * ensure we have found the correct subtitle lang
   if (!subtitle || !subtitle.baseUrl) throw new Error(`Could not find ${lang} captions for ${videoID}`)
